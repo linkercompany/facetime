@@ -11,7 +11,7 @@ type config = {
 
     SESSION_SECRET: string
 
-    AUTH_MS: string
+    SAMPLE_MS: string
 }
 
 const env = process.env as any
@@ -22,5 +22,5 @@ export const variables: config = {
     MODULE_KEY: env.MODULE_KEY,
     MODULE_NAME: env.MODULE_NAME,
     SESSION_SECRET: env.SESSION_SECRET,
-    AUTH_MS: env.SAMPLE_MS
+    SAMPLE_MS: env.SAMPLE_MS
 }
