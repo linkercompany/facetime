@@ -3,5 +3,5 @@
  * Do not modify this file manually
  */
 
-export * from './sample';
+export * from './room';
 export * from './user';
