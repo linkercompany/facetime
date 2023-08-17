@@ -15,7 +15,6 @@ export class RoomController {
 
     @ahandler
     static async broadcast(req: any, res: any) {
-        console.log('broadcast')
         const wss = await roomLogic.broadcast({
             body: req.body
         })
