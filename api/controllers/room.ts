@@ -7,7 +7,7 @@ export class RoomController {
     @ahandler
     static async connect(ws: any, req: any) {
         console.log('connect')
-        await roomLogic.connect({
+        roomLogic.connect({
             query: req.query,
             websocket: ws
         })
@@ -15,9 +15,9 @@ export class RoomController {
 
     @ahandler
     static async broadcast(req: any, res: any) {
-        const wss = await roomLogic.broadcast({
+        const wss = roomLogic.broadcast({
             body: req.body
         })
-        res.json(formatter(wss))
+        res.json(formatter(wss, 'facetime success'))
     }
 }
