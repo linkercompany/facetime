@@ -17,9 +17,12 @@ export function broadcast(params: types.broadcast) {
 
     const message = params.body.message || new Date().getTime()
 
-    wss.forEach((ws) => {
-        ws.send(message)
+    return wss.map((ws) => {
+        try {
+            ws.send(message)
+            return true
+        } catch (e) {
+            return false
+        }
     })
-
-    return wss
 }
