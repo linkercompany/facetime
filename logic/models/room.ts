@@ -22,12 +22,9 @@ export async function broadcast(params: types.broadcast) {
     const results = await Promise.all(
         wss.map(async (ws) => {
             try {
-                if (ws.readyState !== WebSocket.OPEN) {
-                    ws.send(message)
-                    await delay(500) // 0.5 saniye (500 ms) bekleyin
-                    return true
-                }
-                return false
+                ws.send(message)
+                await delay(0) // 0.5 saniye (500 ms) bekleyin
+                return true
             } catch (e) {
                 return false
             }
