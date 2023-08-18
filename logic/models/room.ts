@@ -17,19 +17,20 @@ export async function broadcast(params: types.broadcast) {
 
     const message = params.body.message || new Date().getTime()
 
-    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+    async function wssend(ws: any) {
+        ws.send(message)
+    }
 
-    const results = await Promise.all(
-        wss.map(async (ws) => {
-            try {
-                ws.send(message)
-                await delay(0) // 0.5 saniye (500 ms) bekleyin
-                return true
-            } catch (e) {
-                return false
-            }
-        })
-    )
+    // recursive bir şekilde sürekli 1 saniye bekleyerek tüm websocketlere istek at
+    async function send(index = 0) {
+        const ws = wss[index]
+        if (ws) {
+            await wssend(ws)
+            setTimeout(() => {
+                send(index + 1)
+            }, 500)
+        }
+    }
 
-    return results
+    send()
 }
