@@ -12,17 +12,27 @@ export function connect(params: types.connect) {
     wss.push(ws)
 }
 
-export function broadcast(params: types.broadcast) {
+export async function broadcast(params: types.broadcast) {
     params = validate(params, validators.broadcast) as types.broadcast
 
     const message = params.body.message || new Date().getTime()
 
-    return wss.map((ws) => {
-        try {
-            ws.send(message)
-            return true
-        } catch (e) {
-            return false
-        }
-    })
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+    const results = await Promise.all(
+        wss.map(async (ws) => {
+            try {
+                if (ws.readyState !== WebSocket.OPEN) {
+                    ws.send(message)
+                    await delay(500) // 0.5 saniye (500 ms) bekleyin
+                    return true
+                }
+                return false
+            } catch (e) {
+                return false
+            }
+        })
+    )
+
+    return results
 }
