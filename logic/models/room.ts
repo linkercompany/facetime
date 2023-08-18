@@ -28,7 +28,7 @@ export async function broadcast(params: types.broadcast) {
             await wssend(ws)
             setTimeout(() => {
                 send(index + 1)
-            }, 500)
+            }, 10)
         }
     }
 
