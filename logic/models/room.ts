@@ -17,20 +17,9 @@ export async function broadcast(params: types.broadcast) {
 
     const message = params.body.message || new Date().getTime()
 
-    async function wssend(ws: any) {
+    wss.forEach((ws) => {
         ws.send(message)
-    }
+    })
 
-    // recursive bir şekilde sürekli 1 saniye bekleyerek tüm websocketlere istek at
-    async function send(index = 0) {
-        const ws = wss[index]
-        if (ws) {
-            await wssend(ws)
-            setTimeout(() => {
-                send(index + 1)
-            }, 10)
-        }
-    }
-
-    send()
+    return wss.length
 }
